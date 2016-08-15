@@ -50,3 +50,6 @@ back to tab "Files"
 click on notebook file (.ipynb) to open  
 execute analysis code with shift-enter  
 use buttons at the top to change code block views
+
+## 6) To end notebook session,  
+close browser and type ```Ctrl-C``` twice in the cmd window
