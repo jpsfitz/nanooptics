@@ -48,4 +48,5 @@ open:  tab "IPython Clusters"
 increase # of engines (1-7) and click start  
 back to tab "Files"  
 click on notebook file (.ipynb) to open  
-execute analysis code with shift-enter
+execute analysis code with shift-enter  
+use buttons at the top to change code block views
