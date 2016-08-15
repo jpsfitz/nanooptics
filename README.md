@@ -17,10 +17,6 @@ save file as ~/.ipython/profile_default/startup/start.ipy
 
 ## 3) Add notebook editing tools, part 2
 from:  http://people.duke.edu/~ccc14/sta-663-2016/Customizing_Jupyter.html  
-Open a command prompt (type "cmd" in the start menu)  
-run:   ```ipython install-nbextension https://bitbucket.org/ipre/calico/downloads/calico-spell-check-1.0.zip```  
-run:   ```ipython install-nbextension https://bitbucket.org/ipre/calico/downloads/calico-document-tools-1.0.zip```  
-run:   ```ipython install-nbextension https://bitbucket.org/ipre/calico/downloads/calico-cell-tools-1.0.zip```  
 open text editor (Notepad++), empty/new file  
 enter:  
 ```
