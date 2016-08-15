@@ -11,7 +11,7 @@ from:  http://people.duke.edu/~ccc14/sta-663-2016/Customizing_Jupyter.html
 Open a command prompt (type "cmd" in the start menu)  
 run:   ```ipython profile create```  
 open text editor (Notepad++), empty/new file  
-enter: %matplotlib inline  
+enter: ```%matplotlib inline```  
 save file as ~/.ipython/profile_default/startup/start.ipy  
  where ~ = home directory
 
