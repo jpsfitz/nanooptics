@@ -41,7 +41,8 @@ unzip in target analysis directory (use Daten (E:)) if possible
 
 ## 5) Run the notebook environment
 Open a command prompt (type "cmd" in the start menu)  
-Navigate to analysis directory with "cd" command  
+Navigate to analysis directory  
+  (use ```cd``` to change folders, simply ```E:``` to change drive)
 run:   ```jupyter notebook```  
 open:  tab "IPython Clusters"  
 increase # of engines (1-7) and click start  
