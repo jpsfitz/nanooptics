@@ -3,17 +3,17 @@ Getting jupyter up and running on the Lumerical/Nanooptics computer
 
 ## 1) Activate parallel computing resources:
 from:  https://github.com/ipython/ipyparallel  
-Open a command prompt (type "cmd" in the start menu)  
-run:   ```ipcluster nbextension enable```  
+a) Open a command prompt (type "cmd" in the start menu)  
+a) run:   ```ipcluster nbextension enable```  
 
 ## 2) Add notebook editing tools, part 1
 from:  http://people.duke.edu/~ccc14/sta-663-2016/Customizing_Jupyter.html  
-Open a command prompt (type "cmd" in the start menu)  
-run:   ```ipython profile create```  
-open text editor (Notepad++), empty/new file  
-enter: ```%matplotlib inline```  
-save file as ~/.ipython/profile_default/startup/start.ipy  
- where ~ = home directory
+a) Open a command prompt (type "cmd" in the start menu)  
+a) run:   ```ipython profile create```  
+a) open text editor (Notepad++), empty/new file  
+a) enter: ```%matplotlib inline```  
+a) save file as ~/.ipython/profile_default/startup/start.ipy  
+  - where ~ = home directory
 
 ## 3) Add notebook editing tools, part 2
 from:  http://people.duke.edu/~ccc14/sta-663-2016/Customizing_Jupyter.html  
@@ -38,7 +38,7 @@ unzip in target analysis directory (use Daten (E:)) if possible
 ## 5) Run the notebook environment
 Open a command prompt (type "cmd" in the start menu)  
 Navigate to analysis directory  
-  (use ```cd``` to change folders, simply ```E:``` to change drive)
+  (use ```cd``` to change folders, simply ```E:``` to change drive)  
 run:   ```jupyter notebook```  
 open:  tab "IPython Clusters"  
 increase # of engines (1-7) and click start  
