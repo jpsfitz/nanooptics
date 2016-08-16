@@ -1,5 +1,5 @@
 # nanooptics
-Getting jupyter up and running on the Lumerical/Nanooptics coomputer
+Getting jupyter up and running on the Lumerical/Nanooptics computer
 
 ## 1) Activate parallel computing resources:
 from:  https://github.com/ipython/ipyparallel  
