@@ -53,6 +53,8 @@ Follow these steps every time you want to run a Jupyter notebook/python analysis
 
 ## F. Tips
  * Keep the task manager running to monitor memory and cpu performance.
-  * This will show if anyone else running cpu-intensive calculations.
-  * Please communicate with other users if you are planning to run cpu-intense calculations
- * You can edit text files (python code) directly in the browser with Jupyter notebook, but it might be useful to use an external editor from time to time. Notepad++ is recommended.
+  * makes it easy to kill run-away calculations.
+  * shows if anyone else is running cpu-intensive calculations.
+ * Please communicate with other users if you are planning to run cpu-intense, long calculations.
+ * You can edit text files (python code) directly in the browser with Jupyter notebook. Notepad++ is the recommended external editor.
+ * Dropbox can be installed locally (without admin priveleges) for easy syncing between computers.
