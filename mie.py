@@ -325,6 +325,26 @@ def Cext(lmax, ns, Rs, k0):
         Ctot = Ctot + CM[l] + CE[l]
     return Ctot
 
+# Total extinction, absorption, scattering
+def CExtAbsSca(lmax, ns, Rs, k0):
+    nmed = np.real(ns[-1])
+    k = nmed*k0
+    aList = aTEList(lmax, ns, Rs, k0)
+    bList = bTMList(lmax, ns, Rs, k0)
+    CExt, CAbs, CSca = 0, 0, 0
+    for l in range(1, lmax+1):
+        coeffl = (2*pi/(k*k))*((2*l+1)/(l*(l+1)))
+        al = 2*np.real(aList[l])
+        bl = 2*np.real(bList[l])
+        CExt = CExt + coeffl*(al+bl)
+        al = abs(-aList[l]+1)
+        bl = abs(-bList[l]+1)
+        CAbs = CAbs + coeffl*(2-al*al-bl*bl)
+        al = abs(aList[l])
+        bl = abs(bList[l])
+        CSca = CSca + coeffl*(al*al+bl*bl)
+    return [CExt, CAbs, CSca]
+
 # Efficiency
 def Qeff(R,C): return C/(2*pi*R*R)
 
@@ -334,4 +354,3 @@ def alpha(ns, Rs, k0):
     k = nmed*k0
     a = aTEList(1, ns, Rs, k0)[0]
     return 1j*(3/2)*a/(k*k*k)
-	
