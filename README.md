@@ -30,7 +30,7 @@ require(['base/js/utils'],
 save file as ~/.jupyter/custom/custom.js  
  where ~ = home directory  
 
-## 4) Download anaylysis codes and example notebook
+## 4) Download analysis codes and example notebook
 from:  https://github.com/jpsfitz/nanooptics  
 download all files as zip ("Clone or download" button)  
 unzip in target analysis directory (use Daten (E:)) if possible  
