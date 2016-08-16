@@ -1,12 +1,12 @@
 # nanooptics
 Getting jupyter up and running on the Lumerical/Nanooptics computer
 
-## 1. Activate parallel computing resources:
+## A. Activate parallel computing resources:
 from:  https://github.com/ipython/ipyparallel  
  1. Open a command prompt (type "cmd" in the start menu)  
  2. run:   ```ipcluster nbextension enable```  
 
-## 2. Add notebook editing tools, part 1
+## B. Add notebook editing tools, part 1
 from:  http://people.duke.edu/~ccc14/sta-663-2016/Customizing_Jupyter.html  
  1. Open a command prompt (type "cmd" in the start menu)  
  2. run:   ```ipython profile create```  
@@ -15,7 +15,7 @@ from:  http://people.duke.edu/~ccc14/sta-663-2016/Customizing_Jupyter.html
  5. save file as ~/.ipython/profile_default/startup/start.ipy  
    * where ~ = home directory
 
-## 3. Add notebook editing tools, part 2
+## C. Add notebook editing tools, part 2
 from:  http://people.duke.edu/~ccc14/sta-663-2016/Customizing_Jupyter.html  
  1. open text editor (Notepad++), empty/new file  
  2. enter:  
@@ -30,12 +30,12 @@ require(['base/js/utils'],
  3. save file as ~/.jupyter/custom/custom.js  
    * where ~ = home directory  
 
-## 4. Download analysis codes and example notebook
+## D. Download analysis codes and example notebook
 from:  https://github.com/jpsfitz/nanooptics  
  1. download all files as zip ("Clone or download" button)  
  2. unzip in target analysis directory (use Daten (E:)) if possible  
 
-## 5. Run the notebook environment
+## E. Run the notebook environment
 Follow these steps every time you want to run a python analysis.
  1. Open a command prompt (type "cmd" in the start menu)  
  2. Navigate to analysis directory  
