@@ -53,8 +53,11 @@ def printCheck():
 def CextRelDipEMList(CextEMList):
     total = sum(CextEMList[0][0:-1]) + sum(CextEMList[1][0:-1])
     return [CextEMList[0][-1]/total, CextEMList[1][-1]/total]
+	
+## Au nanoparticles in water ##
 
-# Au NP in water, list of extinction cross sections by polarization and multipole
+# Bare Au NP in water
+# List of extinction cross sections by polarization and multipole
 def CextEMListAuH2O(lmax, rCorenm, wl0nm):
     nmed = nH2O(wl0nm)
     return [CextEList(lmax, [nAuSc(wl0nm,rCorenm*4/3),nmed], [rCorenm], 2*pi/wl0nm),
@@ -85,3 +88,39 @@ def CExtAbsScaAuGelH2O(lmax, rCorenm, rShellnm, wl0nm):
     nmed = nH2O(wl0nm)
     nShell = nmed + 0.042
     return CExtAbsSca(lmax, [nAuSc(wl0nm,rCorenm*4/3),nShell,nmed], [rCorenm,rShellnm], 2*pi/wl0nm)
+
+
+## Ag nanoparticles in water ##
+
+# Bare Ag NP in water
+# List of extinction cross sections by polarization and multipole
+def CextEMListAgH2O(lmax, rCorenm, wl0nm):
+    nmed = nH2O(wl0nm)
+    return [CextEList(lmax, [nAgSc(wl0nm,rCorenm*4/3),nmed], [rCorenm], 2*pi/wl0nm),
+     CextMList(lmax, [nAgSc(wl0nm,rCorenm*4/3),nmed], [rCorenm], 2*pi/wl0nm)]
+# Total extinction cross section
+def CextAgH2O(lmax, rCorenm, wl0nm):
+    nmed = nH2O(wl0nm)
+    return Cext(lmax, [nAgSc(wl0nm,rCorenm*4/3),nmed], [rCorenm], 2*pi/wl0nm)
+# Total extinction, absorption, scattering cross sections
+def CabsAgH2O(lmax, rCorenm, rShellnm, wl0nm):
+    nmed = nH2O(wl0nm)
+    return CExtAbsSca(lmax, [nAgSc(wl0nm,rCorenm*4/3),nmed], [rCorenm], 2*pi/wl0nm)
+
+# Ag core-shell NP with swollen PNIPAM shell in water
+# List of extinction cross sections by polarization and multipole
+def CextEMListAgGelH2O(lmax, rCorenm, rShellnm, wl0nm):
+    nmed = nH2O(wl0nm)
+    nShell = nmed + 0.042
+    return [CextEList(lmax, [nAgSc(wl0nm,rCorenm*4/3),nShell,nmed], [rCorenm,rShellnm], 2*pi/wl0nm),
+     CextMList(lmax, [nAgSc(wl0nm,rCorenm*4/3),nShell,nmed], [rCorenm,rShellnm], 2*pi/wl0nm)]
+# Total extinction cross section
+def CextAgGelH2O(lmax, rCorenm, rShellnm, wl0nm):
+    nmed = nH2O(wl0nm)
+    nShell = nmed + 0.042
+    return Cext(lmax, [nAgSc(wl0nm,rCorenm*4/3),nShell,nmed], [rCorenm,rShellnm], 2*pi/wl0nm)
+# Total extinction, absorption, scattering cross sections
+def CExtAbsScaAgGelH2O(lmax, rCorenm, rShellnm, wl0nm):
+    nmed = nH2O(wl0nm)
+    nShell = nmed + 0.042
+    return CExtAbsSca(lmax, [nAgSc(wl0nm,rCorenm*4/3),nShell,nmed], [rCorenm,rShellnm], 2*pi/wl0nm)
