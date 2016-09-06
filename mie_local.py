@@ -54,6 +54,18 @@ def CextRelDipEMList(CextEMList):
     total = sum(CextEMList[0][0:-1]) + sum(CextEMList[1][0:-1])
     return [CextEMList[0][-1]/total, CextEMList[1][-1]/total]
 	
+## Bare Au nanoparticles in homogeneous medium ##
+# List of extinction cross sections by polarization and multipole
+def CextEMListAu(lmax, rCorenm, nmed, wl0nm):
+    return [CextEList(lmax, [nAuSc(wl0nm,rCorenm*4/3),nmed], [rCorenm], 2*pi/wl0nm),
+     CextMList(lmax, [nAuSc(wl0nm,rCorenm*4/3),nmed], [rCorenm], 2*pi/wl0nm)]
+# Total extinction cross section
+def CextAu(lmax, rCorenm, nmed, wl0nm):
+    return Cext(lmax, [nAuSc(wl0nm,rCorenm*4/3),nmed], [rCorenm], 2*pi/wl0nm)
+# Total extinction, absorption, scattering cross sections
+def CExtAbsScaAu(lmax, rCorenm, nmed, wl0nm):
+    return CExtAbsSca(lmax, [nAuSc(wl0nm,rCorenm*4/3),nmed], [rCorenm], 2*pi/wl0nm)
+
 ## Au nanoparticles in water ##
 
 # Bare Au NP in water
@@ -67,7 +79,7 @@ def CextAuH2O(lmax, rCorenm, wl0nm):
     nmed = nH2O(wl0nm)
     return Cext(lmax, [nAuSc(wl0nm,rCorenm*4/3),nmed], [rCorenm], 2*pi/wl0nm)
 # Total extinction, absorption, scattering cross sections
-def CabsAuH2O(lmax, rCorenm, rShellnm, wl0nm):
+def CabsAuH2O(lmax, rCorenm, wl0nm):
     nmed = nH2O(wl0nm)
     return CExtAbsSca(lmax, [nAuSc(wl0nm,rCorenm*4/3),nmed], [rCorenm], 2*pi/wl0nm)
 
@@ -103,7 +115,7 @@ def CextAgH2O(lmax, rCorenm, wl0nm):
     nmed = nH2O(wl0nm)
     return Cext(lmax, [nAgSc(wl0nm,rCorenm*4/3),nmed], [rCorenm], 2*pi/wl0nm)
 # Total extinction, absorption, scattering cross sections
-def CabsAgH2O(lmax, rCorenm, rShellnm, wl0nm):
+def CabsAgH2O(lmax, rCorenm, wl0nm):
     nmed = nH2O(wl0nm)
     return CExtAbsSca(lmax, [nAgSc(wl0nm,rCorenm*4/3),nmed], [rCorenm], 2*pi/wl0nm)
 
