@@ -111,4 +111,11 @@ Edit the generated config file (`~/.jupyter/jupyter_notebook_config.py`)
   - `c.NotebookApp.browser = '/usr/binfirefox'`
   - make sure that it is not indented.
 - Change to set default opening directory 
-  - `c.NotebookApp.notebook_dir = '/home/fit/Dropbox/python'
+  - `c.NotebookApp.notebook_dir = '/home/fit/Dropbox/python`
+- May need to delete `.json` files in `/home/fit/.jupyter` (fixes conda tab)
+
+## F. Install Peak Utils
+PeakUtils automates peak fitting in noisy or sloped curves.  
+http://pythonhosted.org/PeakUtils/  
+https://pypi.python.org/pypi/PeakUtils  
+Follow directions in readme.
