@@ -58,3 +58,11 @@ Follow these steps every time you want to run a Jupyter notebook/python analysis
  * Please communicate with other users if you are planning to run cpu-intense, long calculations.
  * You can edit text files (python code) directly in the browser with Jupyter notebook. Notepad++ is the recommended external editor.
  * Dropbox can be installed locally (without admin priveleges) for easy syncing between computers.
+
+# Getting jupyter up and running on Ubuntu
+## A. Download and install anaconda. Do not give root priveleges.
+https://www.continuum.io/downloads
+* If you have python and jupyter installed through Ubuntu, there will be problems. Uninstall it first.
+
+## B. Parallel computing support
+https://github.com/ipython/ipyparallel
