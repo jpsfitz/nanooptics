@@ -1,5 +1,7 @@
 # nanooptics
-Getting jupyter up and running on the Lumerical/Nanooptics computer
+Getting jupyter up and running on the Lumerical/Nanooptics computer. 
+(old)
+Updated Ubuntu version at the end.
 
 ## A. Activate parallel computing resources:
 from:  https://github.com/ipython/ipyparallel  
@@ -62,7 +64,9 @@ Follow these steps every time you want to run a Jupyter notebook/python analysis
 # Getting jupyter up and running on Ubuntu
 ## A. Download and install anaconda. Do not give root priveleges.
 https://www.continuum.io/downloads
-* If you have python and jupyter installed through Ubuntu, there will be problems. Uninstall it first.
+* If you have ipython and jupyter installed through Ubuntu, there will be problems. Uninstall it first.
+* Afterwards, try not to install packages with 'pip' but instead with 'conda'.
 
 ## B. Parallel computing support
 https://github.com/ipython/ipyparallel
+conda install -c anaconda ipyparallel=5.2.0
