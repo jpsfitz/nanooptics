@@ -6,14 +6,14 @@ Updated Ubuntu version at the end.
 ## A. Activate parallel computing resources:
 from:  https://github.com/ipython/ipyparallel  
  1. Open a command prompt (type "cmd" in the start menu)  
- 2. run:   ```ipcluster nbextension enable```  
+ 2. run:   `ipcluster nbextension enable`  
 
 ## B. Add notebook editing tools, part 1
 from:  http://people.duke.edu/~ccc14/sta-663-2016/Customizing_Jupyter.html  
  1. Open a command prompt (type "cmd" in the start menu)  
- 2. run:   ```ipython profile create```  
+ 2. run:   `ipython profile create`  
  3. open text editor (Notepad++), empty/new file  
- 4. enter: ```%matplotlib inline```  
+ 4. enter: `%matplotlib inline`  
  5. save file as ~/.ipython/profile_default/startup/start.ipy  
    * where ~ = home directory
 
@@ -41,8 +41,8 @@ from:  https://github.com/jpsfitz/nanooptics
 Follow these steps every time you want to run a Jupyter notebook/python analysis.
  1. Open a command prompt (type "cmd" in the start menu)  
  2. Navigate to analysis directory  
-   * (use ```cd``` to change folders, simply ```E:``` to change drive)  
- 3. run:   ```jupyter notebook```  
+   * (use `cd` to change folders, simply `E:` to change drive)  
+ 3. run:   `jupyter notebook`  
  4. open:  tab "IPython Clusters"  
  5. increase # of engines and click start  
   * there are 8 cpu cores, $\tf$ maximum recommended engines is 7
@@ -51,7 +51,7 @@ Follow these steps every time you want to run a Jupyter notebook/python analysis
  7. click on notebook file (.ipynb) to open  
    * execute analysis code with shift-enter  
    * use buttons at the top to change code block views
-   * To end notebook session, close browser and type ```Ctrl-C``` twice in the cmd window
+   * To end notebook session, close browser and type `Ctrl-C` twice in the cmd window
 
 ## F. Tips
  * Keep the task manager running to monitor memory and cpu performance.
@@ -74,27 +74,41 @@ Follow instructions there.
 ## B. Install conda-forge channel
 The 'conda-forge' channel has a lot of very useful and often more up-to-date packages.  
 https://conda-forge.github.io/    
-```conda config --add channels conda-forge```  
+`conda config --add channels conda-forge`  
 * After installation, browse the newly available packages at  https://conda-forge.github.io/feedstocks
 * You probably want to update conda now. There are often conflicts.   
-```conda update --all```  
+`conda update --all`  
 
 ## C. Notebook extensions from conda-forge & github
 These notebook extensions make jupyter notebooks much easier to read and use.  
 https://github.com/conda-forge/jupyter_contrib_nbextensions-feedstock  
 https://github.com/ipython-contrib/jupyter_contrib_nbextensions  
-```conda install jupyter_contrib_nbextensions```   
-```jupyter contrib nbextension install --user```
+`conda install jupyter_contrib_nbextensions`   
+`jupyter contrib nbextension install --user`
 * Now you can use a tab in the jupyter environment (jupyter_nbextensions_configurator) to enable these extensions.
 * There are several handy extensions, but the favorites are 
   - Table of Contents (2)
   - Hide input all
   - Collapsible Headings
 
-## Parallel computing python support
-This will allow your python jupyter notebooks to access a pool of python kernels.  
+## D. Parallel computing python support
+This will allow your python jupyter notebooks to access a pool of python kernels, which can be controlled from within the notebook.
 https://github.com/ipython/ipyparallel  
 https://github.com/conda-forge/ipyparallel-feedstock  
 https://ipyparallel.readthedocs.io/en/latest/  
-```conda install ipyparallel```    
-```ipcluster nbextension enable``` 
+`conda install ipyparallel`    
+`ipcluster nbextension enable --user`  
+`jupyter serverextension enable --py ipyparallel`  
+`jupyter nbextension install --py ipyparallel --user`  
+`jupyter nbextension enable ipyparallel --user --py`  
+
+## E. Some customization
+http://jupyter-notebook.readthedocs.io/en/latest/config.html  
+Create a config file  
+`jupyter notebook --generate-config`  
+Edit the generated config file (`~/.jupyter/jupyter_notebook_config.py`)
+- Change to use non-default browser  
+  - `c.NotebookApp.browser = '/usr/binfirefox'`
+  - make sure that it is not indented.
+- Change to set default opening directory 
+  - `c.NotebookApp.notebook_dir = '/home/fit/Dropbox/python'
