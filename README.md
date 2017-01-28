@@ -65,11 +65,13 @@ Follow these steps every time you want to run a Jupyter notebook/python analysis
 ## A. Download and install anaconda. Do not give root priveleges.
 Anaconda provides the easiest way to get a jupyter notebook environment up and running. Follow the directions at  
 https://www.continuum.io/downloads
+Follow instructions there. 
 * conda and jupyter work best as a local installation without root priveleges. 
 * If you have ipython and jupyter installed through Ubuntu, there will be problems. Uninstall it first.
 * Afterwards, try not to install packages with 'pip' but instead with 'conda'.
+* The command line reference: https://conda.io/docs/commands.html 
 
-## B. Install cnda-forge channel
+## B. Install conda-forge channel
 The 'conda-forge' channel has a lot of very useful and often more up-to-date packages.  
 https://conda-forge.github.io/    
 ```conda config --add channels conda-forge```  
@@ -84,7 +86,7 @@ https://github.com/ipython-contrib/jupyter_contrib_nbextensions
 ```conda install jupyter_contrib_nbextensions```   
 ```jupyter contrib nbextension install --user```
 * Now you can use a tab in the jupyter environment (jupyter_nbextensions_configurator) to enable these extensions.
-* There are several handy extensions, but my favorites are 
+* There are several handy extensions, but the favorites are 
   - Table of Contents (2)
   - Hide input all
   - Collapsible Headings
