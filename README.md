@@ -74,14 +74,14 @@ The 'conda-forge' channel has a lot of very useful and often more up-to-date pac
 https://conda-forge.github.io/  
 ```conda config --add channels conda-forge```  
 * After installation, browse the newly available packages at  https://conda-forge.github.io/feedstocks
-* You probably want to update conda now. There are often conflicts. 
+* You probably want to update conda now. There are often conflicts.   
 ```conda update --all```  
 
 ## C. Notebook extensions from conda-forge & github
 These notebook extensions make jupyter notebooks much easier to read and use.
 https://github.com/conda-forge/jupyter_contrib_nbextensions-feedstock
 https://github.com/ipython-contrib/jupyter_contrib_nbextensions
-```conda install jupyter_contrib_nbextensions```
+```conda install jupyter_contrib_nbextensions```   
 ```jupyter contrib nbextension install --user```
 * Now you can use a tab in the jupyter environment (jupyter_nbextensions_configurator) to enable these extensions.
 * There are several handy extensions, but my favorites are 
@@ -94,5 +94,5 @@ This will allow your python jupyter notebooks to access a pool of python kernels
 https://github.com/ipython/ipyparallel 
 https://github.com/conda-forge/ipyparallel-feedstock
 https://ipyparallel.readthedocs.io/en/latest/
-```conda install ipyparallel``` 
+```conda install ipyparallel```    
 ```ipcluster nbextension enable``` 
