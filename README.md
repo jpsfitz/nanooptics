@@ -119,3 +119,10 @@ PeakUtils automates peak fitting in noisy or sloped curves.
 http://pythonhosted.org/PeakUtils/  
 https://pypi.python.org/pypi/PeakUtils  
 Follow directions in readme.
+
+## G. Inline plots
+Default setting for plots is to pop out of notebook. Change the iPython config files to have the plots in-line.  
+`ipython profile create`  
+In `~/.ipython/profile_default/ipython_kernel_config.py` change:  
+`c.InteractiveShellApp.matplotlib = "inline"`  
+* again, make sure there is no indentation.
