@@ -1,4 +1,7 @@
 # Getting jupyter up and running on Ubuntu
+These installation instructions are for Linux, but they will roughly work for Windows as well with a few adjustments.
+
+
 ## A. Download and install anaconda. Do not give root priveleges.
 Anaconda provides the easiest way to get a jupyter notebook environment up and running. Follow the directions at  
 https://www.continuum.io/downloads
