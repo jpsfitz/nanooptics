@@ -45,45 +45,223 @@ def printCheck():
 
 # -------- Metals --------
 
-# Au: [188,1935] nm
+# Drude model metal
+def nDrude(EPeV, GeV, epsInf, wlnm):
+    EeV = heVfs*cnmfs/wlnm
+    eps = epsInf - EPeV**2/(EeV**2 + 1j*GeV*EeV)
+    n = sqrt(eps)
+    return n
+
+## Au ##
+
+# Au default: [188,1937] nm
 # Johnson & Christy (1972)
-nArray = np.genfromtxt("optical-data/Johnson-Au.csv", delimiter=",")
+# dx.doi.org/10.1103/PhysRevB.6.4370
+nAuArray = np.genfromtxt("optical-data/Johnson-Au.csv", delimiter=",", skip_header=0)
 # Interpolation function
-nAuRe = interpolate.interp1d(1000*nArray[:,0], nArray[...,1], kind="cubic")
-nAuIm = interpolate.interp1d(1000*nArray[:,0], nArray[...,2], kind="cubic")
-def nAu (wl0nm):
+nAuRe = interpolate.interp1d(1e3*nAuArray[:,0], nAuArray[:,1], kind="cubic")
+nAuIm = interpolate.interp1d(1e3*nAuArray[:,0], nAuArray[:,2], kind="cubic")
+def nAu(wl0nm):
     return nAuRe(wl0nm) + 1j*nAuIm(wl0nm)
 # Include electron scattering for confined geometries (thin shells, small particles)
+# Formulas from Bohren & Huffman, Ch. 12
 # For spheres, lsc = (4/3)*Radius
 # For shells, lsc = thickness
-def nAuSc (wl0nm, lscnm): 
+def nAuSc(wl0nm, lscnm): 
     nMetal = nAu(wl0nm) # refractive index of Au
-    ck0fs = cnmfs*(2*pi/wl0nm) # rad/fs, light angular frequency
-    nenm3 = 59 # conduction electron number density for Au and Ag /nm^3
-    vfnmfs = (hbareVfs/eMass0eVnmfs)*pow(3.0*pi*pi*nenm3,1/3) # nm/fs, mean speed
-    omegaPfs = pow(nenm3/(eMass0eVnmfs*eps0enmV),1/2) # rad/fs, bulk plasma frequency
-    neff = sqrt((nMetal*nMetal) + 1j*(pow(omegaPfs,2)*vfnmfs/(pow(ck0fs,3)*lscnm)))
+    epsMetal = nMetal**2 # relative permittivity
+    EeV = heVfs*cnmfs/wl0nm # rad/fs, light angular frequency
+    vfnmfs = 1.40 # nm/fs, mean electron speed, Ashcroft & Mermin
+    EPeV = 9.06 # eV, bulk plasmon energy (calculated from m*)
+    epsEff = epsMetal + 1j*hbareVfs*( (vfnmfs)/(lscnm) )*( (EPeV**2)/(EeV**3) )
+    neff = sqrt(epsEff)
+    return neff
+# more general scattering law
+# first order correction +i*(E1eV/EeV)^3
+# second order correction + (E2eV/EeV)^4
+# with E1^3 = (Ep^2*hb*vF/lsc); E1 < 2.3 eV for r > 5 nm
+# and E2^2 = (Ep*hb*vF/lsc); E2 < 1.2 eV for r > 5 nm
+def nAuScGen(wl0nm, E1eV, E2eV): 
+    nMetal = nAu(wl0nm) # refractive index of Au
+    epsMetal = nMetal**2 # relative permittivity
+    EeV = heVfs*cnmfs/wl0nm # rad/fs, light angular frequency
+    epsEff = epsMetal + 1j*(E1eV/EeV)**3 + (E2eV/EeV)**4
+    neff = sqrt(epsEff)
     return neff
 
-# Ag: [188,1935] nm
-# Johnson & Christy (1972)
-nAgArray = np.genfromtxt("optical-data/Johnson-Ag.csv", delimiter=",")
+# Au: [300,2493] nm
+# Olmon (2012) - template-stripped (lowest uncertainty)
+# dx.doi.org/10.1103/PhysRevB.86.235147
+# Bulk plasmon energy = 8.8 +/-0.05 eV
+# relaxation rate Gamma = 13 +/-1 fs
+nAu2012tsArray = np.genfromtxt("optical-data/Olmon_PRB2012_TS.dat", delimiter="\t", skip_header=2)
 # Interpolation function
-nAgRe = interpolate.interp1d(1000*nAgArray[:,0], nAgArray[...,1], kind="cubic")
-nAgIm = interpolate.interp1d(1000*nAgArray[:,0], nAgArray[...,2], kind="cubic")
-def nAg (wl0nm):
+nAu2012tsRe = interpolate.interp1d(1e9*nAu2012tsArray[:,1], nAu2012tsArray[:,-2], kind="cubic")
+nAu2012tsIm = interpolate.interp1d(1e9*nAu2012tsArray[:,1], nAu2012tsArray[:,-1], kind="cubic")
+def nAu2012ts(wl0nm):
+    return nAu2012tsRe(wl0nm) + 1j*nAu2012tsIm(wl0nm)
+# Include electron scattering for confined geometries (thin shells, small particles)
+# Formulas derived following Bohren & Huffman, Ch. 12
+# For spheres, lsc = (4/3)*radius
+# For shells, lsc = thickness
+def nAu2012tsSc(wl0nm, lscnm): 
+    nMetal = nAu2012ts(wl0nm) # refractive index of Au
+    epsMetal = nMetal**2 # relative permittivity
+    EeV = heVfs*cnmfs/wl0nm # rad/fs, light angular frequency
+    vfnmfs = 1.40 # nm/fs, mean electron speed, Ashcroft & Mermin
+    EPeV = 8.8 # eV, bulk plasmon energy
+    epsEff = epsMetal + 1j*hbareVfs*( (vfnmfs)/(lscnm) )*( (EPeV**2)/(EeV**3) )
+    neff = sqrt(epsEff)
+    return neff
+# more general scattering law
+# first order correction +i*(E1eV/EeV)^3
+# second order correction + (E2eV/EeV)^4
+# with E1^3 = (Ep^2*hb*vF/lsc); E1 < 5 eV for r > 2 nm
+# and E2^2 = (Ep*hb*vF/lsc); E2 < 2.5 eV for r > 2 nm
+def nAu2012tsScGen(wl0nm, E1eV, E2eV): 
+    nMetal = nAu2012ts(wl0nm) # refractive index of Au
+    epsMetal = nMetal**2 # relative permittivity
+    EeV = heVfs*cnmfs/wl0nm # rad/fs, light angular frequency
+    epsEff = epsMetal + 1j*(E1eV/EeV)**3 + (E2eV/EeV)**4
+    neff = sqrt(epsEff)
+    return neff
+
+# Au: [300,2493] nm
+# Olmon (2012) - single-crystal
+# dx.doi.org/10.1103/PhysRevB.86.235147
+# Bulk plasmon energy = 8.1 +/-0.8 eV
+# relaxation rate Gamma = 14 +/-4 fs
+nAu2012scArray = np.genfromtxt("optical-data/Olmon_PRB2012_SC.dat", delimiter="\t", skip_header=2)
+# Interpolation function
+nAu2012scRe = interpolate.interp1d(1e9*nAu2012scArray[:,1], nAu2012scArray[:,-2], kind="cubic")
+nAu2012scIm = interpolate.interp1d(1e9*nAu2012scArray[:,1], nAu2012scArray[:,-1], kind="cubic")
+def nAu2012sc(wl0nm):
+    return nAu2012scRe(wl0nm) + 1j*nAu2012scIm(wl0nm)
+# Include electron scattering for confined geometries (thin shells, small particles)
+# Formulas derived following Bohren & Huffman, Ch. 12
+# For spheres, lsc = (4/3)*radius
+# For shells, lsc = thickness
+def nAu2012scSc(wl0nm, lscnm): 
+    nMetal = nAu2012sc(wl0nm) # refractive index of Au
+    epsMetal = nMetal**2 # relative permittivity
+    EeV = heVfs*cnmfs/wl0nm # rad/fs, light angular frequency
+    vfnmfs = 1.40 # nm/fs, mean electron speed, Ashcroft & Mermin
+    EPeV = 8.1 # eV, bulk plasmon energy
+    epsEff = epsMetal + 1j*hbareVfs*( (vfnmfs)/(lscnm) )*( (EPeV**2)/(EeV**3) )
+    neff = sqrt(epsEff)
+    return neff
+# more general scattering law
+# first order correction +i*(E1eV/EeV)^3
+# second order correction + (E2eV/EeV)^4
+# with E1^3 = (Ep^2*hb*vF/lsc); E1 < 5 eV for r > 2 nm
+# and E2^2 = (Ep*hb*vF/lsc); E2 < 2.5 eV for r > 2 nm
+def nAu2012scScGen(wl0nm, E1eV, E2eV): 
+    nMetal = nAu2012sc(wl0nm) # refractive index of Au
+    epsMetal = nMetal**2 # relative permittivity
+    EeV = heVfs*cnmfs/wl0nm # rad/fs, light angular frequency
+    epsEff = epsMetal + 1j*(E1eV/EeV)**3 + (E2eV/EeV)**4
+    neff = sqrt(epsEff)
+    return neff
+
+# Au: [300,2493] nm
+# Olmon (2012) - evaporated film
+# dx.doi.org/10.1103/PhysRevB.86.235147
+# Bulk plasmon energy = 8.5 +/-0.5 eV
+# relaxation rate Gamma = 14 +/-3 fs
+nAu2012evArray = np.genfromtxt("optical-data/Olmon_PRB2012_EV.dat", delimiter="\t", skip_header=2)
+# Interpolation function
+nAu2012evRe = interpolate.interp1d(1e9*nAu2012evArray[:,1], nAu2012evArray[:,-2], kind="cubic")
+nAu2012evIm = interpolate.interp1d(1e9*nAu2012evArray[:,1], nAu2012evArray[:,-1], kind="cubic")
+def nAu2012ev(wl0nm):
+    return nAu2012evRe(wl0nm) + 1j*nAu2012evIm(wl0nm)
+# Include electron scattering for confined geometries (thin shells, small particles)
+# Formulas derived following Bohren & Huffman, Ch. 12
+# For spheres, lsc = (4/3)*radius
+# For shells, lsc = thickness
+def nAu2012evSc(wl0nm, lscnm): 
+    nMetal = nAu2012ev(wl0nm) # refractive index of Au
+    epsMetal = nMetal**2 # relative permittivity
+    EeV = heVfs*cnmfs/wl0nm # rad/fs, light angular frequency
+    vfnmfs = 1.40 # nm/fs, mean electron speed, Ashcroft & Mermin
+    EPeV = 8.5 # eV, bulk plasmon energy
+    epsEff = epsMetal + 1j*hbareVfs*( (vfnmfs)/(lscnm) )*( (EPeV**2)/(EeV**3) )
+    neff = sqrt(epsEff)
+    return neff
+# more general scattering law
+# first order correction +i*(E1eV/EeV)^3
+# second order correction + (E2eV/EeV)^4
+# with E1^3 = (Ep^2*hb*vF/lsc); E1 < 5 eV for r > 2 nm
+# and E2^2 = (Ep*hb*vF/lsc); E2 < 2.5 eV for r > 2 nm
+def nAu2012evScGen(wl0nm, E1eV, E2eV): 
+    nMetal = nAu2012ev(wl0nm) # refractive index of Au
+    epsMetal = nMetal**2 # relative permittivity
+    EeV = heVfs*cnmfs/wl0nm # rad/fs, light angular frequency
+    epsEff = epsMetal + 1j*(E1eV/EeV)**3 + (E2eV/EeV)**4
+    neff = sqrt(epsEff)
+    return neff
+
+
+## Ag ##
+
+# Ag default: [188,1937] nm
+# Johnson & Christy (1972)
+# dx.doi.org/10.1103/PhysRevB.6.4370
+nAgArray = np.genfromtxt("optical-data/Johnson-Ag.csv", delimiter=",", skip_header=0)
+# Interpolation function
+nAgRe = interpolate.interp1d(1e3*nAgArray[:,0], nAgArray[:,-2], kind="cubic")
+nAgIm = interpolate.interp1d(1e3*nAgArray[:,0], nAgArray[:,-1], kind="cubic")
+def nAg(wl0nm):
     return nAgRe(wl0nm) + 1j*nAgIm(wl0nm)
 # Include electron scattering for confined geometries (thin shells, small particles)
+# Formulas from Bohren & Huffman, Ch. 12
+# Data from J&C (some calculated)
 # For spheres, lsc = (4/3)*Radius
 # For shells, lsc = thickness
-def nAgSc (wl0nm, lscnm): 
+def nAgSc(wl0nm, lscnm): 
     nMetal = nAg(wl0nm) # refractive index of Ag
-    ck0fs = cnmfs*(2*pi/wl0nm) # rad/fs, light angular frequency
-    nenm3 = 59 # conduction electron number density for Au and Ag /nm^3
-    vfnmfs = (hbareVfs/eMass0eVnmfs)*pow(3.0*pi*pi*nenm3,1/3) # nm/fs, mean speed
-    omegaPfs = pow(nenm3/(eMass0eVnmfs*eps0enmV),1/2) # rad/fs, bulk plasma frequency
-    neff = sqrt((nMetal*nMetal) + 1j*(pow(omegaPfs,2)*vfnmfs/(pow(ck0fs,3)*lscnm)))
+    epsMetal = nMetal**2 # relative permittivity
+    EeV = heVfs*cnmfs/wl0nm # rad/fs, light angular frequency
+    vfnmfs = 1.39 # nm/fs, mean electron speed, Ashcroft & Mermin
+    EPeV = 9.17 # eV, bulk plasmon energy (calculated from m*)
+    epsEff = epsMetal + 1j*hbareVfs*( (vfnmfs)/(lscnm) )*( (EPeV**2)/(EeV**3) )
+    neff = sqrt(epsEff)
     return neff
+# more general scattering law
+# first order correction +i*(E1eV/EeV)^3
+# second order correction + (E2eV/EeV)^4
+# with E1^3 = (Ep^2*hb*vF/lsc); E1 < 2.3 eV for r > 5 nm
+# and E2^2 = (Ep*hb*vF/lsc); E2 < 1.2 eV for r > 5 nm
+def nAgScGen(wl0nm, E1eV, E2eV): 
+    nMetal = nAg(wl0nm) # refractive index of Ag
+    epsMetal = nMetal**2 # relative permittivity
+    EeV = heVfs*cnmfs/wl0nm # rad/fs, light angular frequency
+    epsEff = epsMetal + 1j*(E1eV/EeV)**3 + (E2eV/EeV)**4
+    neff = sqrt(epsEff)
+    return neff
+
+# Ag: [300,2000] nm
+# Jiang, Pillai, Green (2016)
+# dx.doi.org/10.1038/srep30605
+nAg2016Array = np.genfromtxt("optical-data/unsw-Ag.csv", delimiter=",", skip_header=1)
+# Interpolation function
+nAg2016Re = interpolate.interp1d(nAg2016Array[:,0], nAg2016Array[:,1], kind="cubic")
+nAg2016Im = interpolate.interp1d(nAg2016Array[:,0], nAg2016Array[:,2], kind="cubic")
+def nAg2016(wl0nm):
+    return nAg2016Re(wl0nm) + 1j*nAg2016Im(wl0nm)
+# Include electron scattering for confined geometries (thin shells, small particles)
+# From Bohren & Huffman, Ch. 12
+# For spheres, lsc = (4/3)*Radius
+# For shells, lsc = thickness
+def nAg2016Sc (wl0nm, lscnm): 
+    nMetal = nAg2016(wl0nm) # refractive index of Ag
+    epsMetal = nMetal**2 # relative permittivity
+    EeV = heVfs*cnmfs/wl0nm # rad/fs, light angular frequency
+    vfnmfs = 1.39 # nm/fs, mean electron speed, Ashcroft & Mermin
+    EPeV = 8.74 # eV, bulk plasmon energy, fitted from eps1 vs wl^2, wl:[1200,2000] nm
+    epsEff = epsMetal + 1j*hbareVfs*( (vfnmfs)/(lscnm) )*( (EPeV**2)/(EeV**3) )
+    neff = sqrt(epsEff)
+    return neff
+
 
 
 # -------- Solid dieletrics (substrates) --------
@@ -92,8 +270,8 @@ def nAgSc (wl0nm, lscnm):
 # Gao (2013)
 nSiO2Array = np.genfromtxt("optical-data/SiO2-Gao-nk.txt", delimiter="\t")
 # Interpolation function
-nSiO2Re = interpolate.interp1d(1000*nSiO2Array[:,0], nSiO2Array[...,1], kind="cubic")
-nSiO2Im = interpolate.interp1d(1000*nSiO2Array[:,0], nSiO2Array[...,2], kind="cubic")
+nSiO2Re = interpolate.interp1d(1000*nSiO2Array[:,0], nSiO2Array[:,1], kind="cubic")
+nSiO2Im = interpolate.interp1d(1000*nSiO2Array[:,0], nSiO2Array[:,2], kind="cubic")
 def nSiO2 (wl0nm):
     return nSiO2Re(wl0nm) + 1j*nSiO2Im(wl0nm)
 
@@ -101,8 +279,8 @@ def nSiO2 (wl0nm):
 # Koenig (2014)
 nITOArray = np.genfromtxt("optical-data/ITO.txt", delimiter="\t")
 # Interpolation function
-nITORe = interpolate.interp1d(1000*nITOArray[:,0], nITOArray[...,1], kind="cubic")
-nITOIm = interpolate.interp1d(1000*nITOArray[:,0], nITOArray[...,2], kind="cubic")
+nITORe = interpolate.interp1d(1000*nITOArray[:,0], nITOArray[:,1], kind="cubic")
+nITOIm = interpolate.interp1d(1000*nITOArray[:,0], nITOArray[:,2], kind="cubic")
 def nITO (wl0nm):
     return nITORe(wl0nm) + 1j*nITOIm(wl0nm)
 

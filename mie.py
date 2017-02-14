@@ -46,11 +46,17 @@ def printCheck():
 # at shell interface radius R
 # returns all orders up to lmax
 def riccatiBessels(lmax, n1, n2, R, k0):
+    lmax = int(lmax)
     k1 = n1*k0 # k in medium 1
     k2 = n2*k0 # k in medium 2
     
     # functions in medium 1
-    (j1, dj1, y1, dy1) = sph_jnyn(lmax, k1*R)
+    (j1, dj1, y1, dy1) = sph_jnyn(lmax, k1*R +1j*1e-9) # depricated in scipy 0.18?
+    # prepare for new SciPy bessel function definitions
+    # j1 = spherical_jn(lmax, k1*R)
+    # dj1 = spherical_jn(lmax, k1*R, derivative=True)
+    # y1 = spherical_yn(lmax, k1*R)
+    # dy1 = spherical_yn(lmax, k1*R, derivative=True) 
     h1 = j1 + y1*1j
     dh1 = dj1 + dy1*1j
     u1 = R*j1
@@ -58,7 +64,12 @@ def riccatiBessels(lmax, n1, n2, R, k0):
     w1 = R*h1
     dw1 = h1 + k1*R*dh1
     # functions in medium 2
-    (j2, dj2, y2, dy2) = sph_jnyn(lmax, k2*R)
+    (j2, dj2, y2, dy2) = sph_jnyn(lmax, k2*R +1j*1e-9) # depricated in scipy 0.18?
+    # prepare for new SciPy bessel function definitions
+    # j2 = spherical_jn(lmax, k2*R)
+    # dj2 = spherical_jn(lmax, k2*R, derivative=True)
+    # y2 = spherical_yn(lmax, k2*R)
+    # dy2 = spherical_yn(lmax, k2*R, derivative=True)
     h2 = j2 + y2*1j
     dh2 = dj2 + dy2*1j
     u2 = R*j2
@@ -348,9 +359,9 @@ def CExtAbsSca(lmax, ns, Rs, k0):
 # Efficiency
 def Qeff(R,C): return C/(2*pi*R*R)
 
-# Dipole polarizability
+# Dipole polarizability (for CDA computation)
 def alpha(ns, Rs, k0):
     nmed = np.real(ns[-1])
     k = nmed*k0
-    a = aTEList(1, ns, Rs, k0)[0]
+    a = aTEList(1, ns, Rs, k0)[1]
     return 1j*(3/2)*a/(k*k*k)
