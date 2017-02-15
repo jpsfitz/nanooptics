@@ -66,7 +66,8 @@ Default setting for plots is to pop out of notebook. Change the iPython config f
 `ipython profile create`  
 In `~/.ipython/profile_default/ipython_kernel_config.py` change:  
 `c.InteractiveShellApp.matplotlib = "inline"`  
-* again, make sure there is no indentation.
+* again, make sure there is no indentation.  
+
 ### Size and fonts of inline plots
 Add to `~/.ipython/profile_default/ipython_kernel_config.py`:   
 ```
