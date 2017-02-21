@@ -28,8 +28,8 @@ def printCheck():
 # Scalar, in-plane
 def latticeSumS0(RmagList, NList, k):
     
-    def S (r, n):
-        return ( np.exp(1j*k*r)/r**3 )*( (k**2)*(r**2) + (1 - 1j*k*r))*(n/2)
+    def S (R, N):
+        return ( np.exp(1j*k*R)/R**3 )*( (k**2)*(R**2)*(N/2) - (1 - 1j*k*R)*(N/2) )
     
     Stot = 0
     length = len(RmagList)
@@ -37,15 +37,15 @@ def latticeSumS0(RmagList, NList, k):
     for i in range(length):
         R = RmagList[i]
         N = NList[i]
-        Stot += S(R,N)
+        Stot = Stot + S(R,N)
     
     return Stot
 
 # Scalar, out-of-plane
 def latticeSumS0z(RmagList, NList, k):
     
-    def S (r, n):
-        return ( np.exp(1j*k*r)/r**3 )*( (k**2)*(r**2) - (1 - 1j*k*r))*(n)
+    def S (R, N):
+        return ( np.exp(1j*k*R)/R**3 )*( (k**2)*(R**2)*(N) + (1 - 1j*k*R)*(N) )
     
     Stot = 0
     length = len(RmagList)
@@ -53,13 +53,13 @@ def latticeSumS0z(RmagList, NList, k):
     for i in range(length):
         R = RmagList[i]
         N = NList[i]
-        Stot += S(R,N)
+        Stot = Stot + S(R,N)
     
     return Stot
 
-# Matrix 
+# Matrix for simplified geometry
 def latticeSumS0Mat(RmagList, NList, k):
-    Sxy = latticeSumS0(RmagList, NList, k)
+    Sxx = latticeSumS0(RmagList, NList, k)
     Sz = latticeSumS0z(RmagList, NList, k)
     SMatTot = np.array([[Sxy,0,0], [0,Sxy,0], [0,0,Sz]])
     return SMatTot
@@ -68,13 +68,10 @@ def latticeSumS0Mat(RmagList, NList, k):
 def latticeSumSMat(RvecList, k):
     
     def SMat (Rvec):
-        R = np.sqrt((Rvec*Rvec).sum(axis=0))
-        Rhat = Rvec/R
+        R = np.sqrt((Rvec*Rvec).sum())
+        Rhat = np.array([Rvec/R])
+        RRMat = Rhat*(Rhat.T)
         I3Mat = np.identity(3)
-        RRMat = np.zeros_like(I3Mat)
-        for alpha in range(3):
-            for beta in range(3):
-                RRMat[alpha, beta] = Rhat[alpha]*Rhat[beta]
         CMat = I3Mat - RRMat
         DMat = I3Mat - 3*RRMat
         return ( np.exp(1j*k*R)/R**3 )*( (k**2)*(R**2)*CMat + (1 - 1j*k*R)*DMat )
