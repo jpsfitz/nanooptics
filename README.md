@@ -30,6 +30,8 @@ https://github.com/ipython-contrib/jupyter_contrib_nbextensions
   - Table of Contents (2)
   - Hide input all
   - Collapsible Headings
+  - Execute Time
+  - Hide input
 
 ## D. Parallel computing python support
 This will allow your python jupyter notebooks to access a pool of python kernels, which can be controlled from within the notebook.
