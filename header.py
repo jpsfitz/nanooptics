@@ -51,10 +51,15 @@ import matplotlib.cm as cm
 print("      matplotlib.pylab as pylab")
 import matplotlib.pylab as pylab
 
+# symbolic algebraic manipulation & pretty math output
+print('  ... sympy')
+import sympy
+sympy.init_printing
+
 # peak detection
 # https://bitbucket.org/lucashnegri/peakutils
-print("  ... peakutils")
-import peakutils
+# print("  ... peakutils")
+# import peakutils
 
 # ignore deprecation warnings
 import warnings
@@ -94,14 +99,6 @@ ri.printCheck()
 # Mie theory codes
 import mie # General
 mie.printCheck()
-
-# CDA codes
-import cda # General
-cda.printCheck()
-
-# Hexagonal lattice geometry
-import lattices 
-lattices.printCheck()
 
 
 # -------- Announce ready --------

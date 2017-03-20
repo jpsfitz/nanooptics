@@ -359,9 +359,9 @@ def CExtAbsSca(lmax, ns, Rs, k0):
 # Efficiency
 def Qeff(R,C): return C/(2*pi*R*R)
 
-# Dipole polarizability (for CDA computation)
+# Dipole polarizability
 def alpha(ns, Rs, k0):
     nmed = np.real(ns[-1])
     k = nmed*k0
-    a = aTEList(1, ns, Rs, k0)[1]
+    a = aTEList(1, ns, Rs, k0)[0]
     return 1j*(3/2)*a/(k*k*k)
