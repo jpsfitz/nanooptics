@@ -70,9 +70,14 @@ In `~/.ipython/profile_default/ipython_kernel_config.py` change:
 `c.InteractiveShellApp.matplotlib = "inline"`  
 * again, make sure there is no indentation.  
 
-### Size and fonts of inline plots
+### Size, font, and display format of inline plots
 Add to `~/.ipython/profile_default/ipython_kernel_config.py`:   
 ```
 # Subset of matplotlib rcParams that should be different for the inline backend.
-c.InlineBackend.rc = {'font.size': 12, 'figure.figsize': (5.0, 5.0), 'figure.facecolor': 'white', 'savefig.dpi': 144, 'figure.subplot.bottom': 0.125, 'figure.edgecolor': 'white'}
+c.InlineBackend.rc = {'font.size': 12, 'figure.figsize': (5.0, 5.0), 'figure.facecolor': 'white', 'savefig.dpi': 144, 'figure.subplot.bottom': 0.125, 'figure.edgecolor': 'white'} 
+c.InlineBackend.figure_format = 'svg'
 ```
+By default, the svg output converts text to paths. This generally looks better, but makes it more difficult to 
+manipulate any saved graphs. The flag to add/change is `'svg.fonttype': 'none'` for text output, or 
+`'svg.fonttype': 'path'` for the default path output. 
+
